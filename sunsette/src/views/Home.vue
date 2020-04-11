@@ -1,14 +1,9 @@
 <template>
   <div class="home">
-    <br><br><br><br><br>
-    <br><br><br><br><br>
-    <br><br><br><br><br>
-    <br><br><br><br><br>
-    <br><br><br><br><br>
-    <br><br><br><br><br>
-    <br><br><br><br><br>
-    <br><br><br><br><br>
-    <br><br><br><br><br>
+
+    <div>
+      {{this.$store.state.cities.cities}}
+    </div>
     <br><br><br><br><br>
     <br><br><br><br><br>
     <br><br><br><br><br>
@@ -26,6 +21,12 @@ export default {
   name: 'Home',
   components: {
     
+  },
+
+  computed : {
+    hide() {
+      return this.$store.state.cities.length == 0;
+    },
   }
 }
 </script>

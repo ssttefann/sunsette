@@ -27,10 +27,12 @@
           <v-col cols="8" lg="6">
             <v-autocomplete
               dark
-              v-model="friends"
+              v-model="cities"
               :disabled="isUpdating"
               v-on:input="limiter"
-              :items="people"
+              :items="entries"
+              :search-input.sync="search"
+              :loading="isLoading"
               chips
               deletable-chips
               filled
@@ -39,19 +41,17 @@
               hide-selected
               color="blue-grey lighten-2"
               label="Choose locations:"
-              item-text="name"
-              item-value="name"
               multiple
             >
               <!-- No data template -->
-              <!-- <template v-slot:no-data>
+              <template v-slot:no-data>
                 <v-list-item>
                   <v-list-item-title>
                     Search for your favorite
                     <strong>Cryptocurrency</strong>
                   </v-list-item-title>
                 </v-list-item>
-              </template> -->
+              </template>
 
               <!-- TEMPLATE -->
               <!-- <template v-slot:selection="data">
@@ -81,7 +81,6 @@ export default {
     return {
       friends: ["Sandra Adams", "Britta Holt"],
       isUpdating: false,
-      name: "Midnight Crew",
       people: [
         { name: "Sandra Adams" },
         { name: "Ali Connors" },
@@ -106,9 +105,10 @@ export default {
       }
     },
 
-    search() {
+    search(val) {
       // Items have already been loaded
-      if (this.items.length > 0) return;
+      // if (this.items.length > 0) return;
+      if (!val) return;
 
       // Items have already been requested
       if (this.isLoading) return;
@@ -116,12 +116,17 @@ export default {
       this.isLoading = true;
 
       // Lazily load input items
-      fetch("https://api.publicapis.org/entries")
+      fetch(`https://api.teleport.org/api/cities/?search=${val}&limit=10`)
         .then(res => res.json())
         .then(res => {
-          const { count, entries } = res;
-          this.count = count;
-          this.entries = entries;
+          let cities = res._embedded["city:search-results"];
+          let new_entries = cities.map(city => {
+            city = city.matching_full_name.replace(/\([^}]*\)/, "");
+            city = city.replace(/,.*,/, ",");
+            return city;
+          });
+
+          this.entries.push(...new_entries);
         })
         .catch(err => {
           console.log(err);
@@ -131,22 +136,25 @@ export default {
   },
 
   computed: {
-    items() {
-      return false;
-      // return this.entries.map(entry => {
-      //   const Description = entr
-      // })
+    cities: {
+      get() {
+        return this.$store.state.cities.cities;
+      },
+      set(value) {
+        this.addCities(value);
+        this.search = "";
+      }
     }
   },
 
   methods: {
-    remove(item) {
-      const index = this.friends.indexOf(item.name);
-      if (index >= 0) this.friends.splice(index, 1);
-    },
+    ...mapActions({
+      addCities: "cities/addCities"
+    }),
 
     /* Limits the number of max locations to 4*/
     limiter(val) {
+      console.log(this.$store.state.cities);
       if (val.length > 4) {
         val.pop();
         this.showSnackbar([
@@ -155,11 +163,7 @@ export default {
           "bottom"
         ]);
       }
-    },
-
-    ...mapActions({
-      showSnackbar: "snackbar/showSnackbar"
-    })
+    }
   }
 };
 </script>
