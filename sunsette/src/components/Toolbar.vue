@@ -29,9 +29,9 @@
               dark
               v-model="cities"
               :disabled="isUpdating"
-              v-on:input="limiter"
               :items="entries"
               :search-input.sync="search"
+              v-on:input="limiter"
               :loading="isLoading"
               chips
               deletable-chips
@@ -40,31 +40,11 @@
               hide-no-data
               hide-selected
               color="blue-grey lighten-2"
-              label="Choose locations:"
+              placeholder="Choose locations:"
+              prepend-icon="mdi-magnify"
+              item-text="name"
               multiple
             >
-              <!-- No data template -->
-              <template v-slot:no-data>
-                <v-list-item>
-                  <v-list-item-title>
-                    Search for your favorite
-                    <strong>Cryptocurrency</strong>
-                  </v-list-item-title>
-                </v-list-item>
-              </template>
-
-              <!-- TEMPLATE -->
-              <!-- <template v-slot:selection="data">
-                <v-chip
-                  v-bind="data.attrs"
-                  :input-value="data.selected"
-                  close
-                  @click="data.select"
-                  @click:close="remove(data.item)"
-                >
-                  {{ data.item.name }}
-                </v-chip>
-              </template> -->
             </v-autocomplete>
           </v-col>
         </v-row>
@@ -79,21 +59,9 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      friends: ["Sandra Adams", "Britta Holt"],
-      isUpdating: false,
-      people: [
-        { name: "Sandra Adams" },
-        { name: "Ali Connors" },
-        { name: "Trevor Hansen" },
-        { name: "Tucker Smith" },
-        { name: "Britta Holt" },
-        { name: "Jane Smith " },
-        { name: "John Smith" },
-        { name: "Sandra Williams" }
-      ],
-
       entries: [],
       isLoading: false,
+      isUpdating: false,
       model: null,
       search: null
     };
@@ -140,8 +108,18 @@ export default {
       get() {
         return this.$store.state.cities.cities;
       },
-      set(value) {
-        this.addCities(value);
+      async set(value) {
+        if (this.limiter(this.cities)) return;
+
+        //deletion
+        if (value.length < this.cities.length) {
+          // await this.delete
+          return;
+        }
+
+        //addition
+        // last item is the newly added city
+        await this.addCity(value[value.length - 1]);
         this.search = "";
       }
     }
@@ -149,12 +127,13 @@ export default {
 
   methods: {
     ...mapActions({
-      addCities: "cities/addCities"
+      addCity: "cities/addCity",
+      deleteCity: "cities/deleteCity",
+      showSnackbar: "snackbar/showSnackbar"
     }),
 
     /* Limits the number of max locations to 4*/
     limiter(val) {
-      console.log(this.$store.state.cities);
       if (val.length > 4) {
         val.pop();
         this.showSnackbar([
@@ -163,6 +142,8 @@ export default {
           "bottom"
         ]);
       }
+
+      if (val.length == 4) return true;
     }
   }
 };

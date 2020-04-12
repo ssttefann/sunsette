@@ -1,9 +1,8 @@
 <template>
   <div class="home">
 
-    <div>
-      {{this.$store.state.cities.cities}}
-    </div>
+    <CityImages/>
+
     <br><br><br><br><br>
     <br><br><br><br><br>
     <br><br><br><br><br>
@@ -16,11 +15,12 @@
 
 <script>
 // @ is an alias to /src
+import CityImages from './../components/CityImages'
 
 export default {
   name: 'Home',
   components: {
-    
+    CityImages
   },
 
   computed : {
