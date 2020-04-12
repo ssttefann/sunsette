@@ -2,16 +2,16 @@
   <v-container>
     <v-row class="mx-12 px-12" align="center" justify="center">
       <template v-for="city in cities">
-        <v-col cols="6" lg="3" v-bind:key="city.name">
+        <v-col cols="6" lg="3" class="" v-bind:key="city.name">
           <v-card hover class="rounded-card">
             <v-img height="200px" :src="city.image" class="align-end">
               <v-row align="end" justify="end">
                 <v-card primary class="px-6 py-2 rounded-card" hover>
                   <v-card-text class="pa-0">
-                    21:30
+                    {{city.date.getHours() + ":" + city.date.getMinutes()}}
                     <span
                       class="iconify"
-                      data-icon="twemoji:sun"
+                      :data-icon="city.dateIcon"
                       data-inline="false"
                     ></span>
                     <!-- <span
@@ -62,6 +62,7 @@ export default {
 <style>
 .rounded-card {
   border-radius: 10px !important;
+  max-width: 350px!important;
 }
 
 .iconify {

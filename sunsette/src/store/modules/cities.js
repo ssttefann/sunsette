@@ -1,23 +1,33 @@
+import Vue from "vue";
+
 const state = {
   cities: [],
   stockImages: [
-    "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/S%C3%A3o_Paulo_city_%28Bela_Vista%29.jpg/500px-S%C3%A3o_Paulo_city_%28Bela_Vista%29.jpg",
-    "https://jooinn.com/images/urban-area-5.jpg",
-    "https://www.un.org/en/development/desa/population/images/themes/urbanization.jpg",
-    "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"
+    require("@/assets/images/stock1.jpg"),
+    require("@/assets/images/stock2.jpg"),
+    require("@/assets/images/stock3.jpg"),
+    require("@/assets/images/stock4.jpg")
   ]
 };
 
 const mutations = {
-
   addCity(state, newCity) {
-    // should list all attributes 
-    // so that reactive properties work
-    let obj = {
-      name: newCity,
-      image : ""
-    };
-    state.cities.push(obj);
+    state.cities.push(newCity);
+  },
+
+  deleteCity(state, name) {
+    state.cities = state.cities.filter(city => city.name !== name);
+  },
+
+  emptyCitiesArray(state) {
+    state.cities = [];
+  },
+
+  updateDates(state, newDate) {
+    for (let city of state.cities){
+      if (city.date.getMinutes() != newDate)
+        city.date.setMinutes(newDate);
+    }
   },
 
   setImage(state, newImage) {
@@ -27,15 +37,53 @@ const mutations = {
 
 const actions = {
   async addCity({ commit, dispatch }, data) {
-    // 
-    await commit("addCity", data);
-    dispatch("addImage")
+    let obj = {
+      name: data,
+      image: ""
+    };
 
+    let name = data.split(",")[0];
+    let url = `http://api.openweathermap.org/data/2.5/weather?q=${name}&appid=${Vue.$omwKey}`;
+
+    try {
+      let { data } = await Vue.$axios.get(url);
+      obj.currWeatherData = data;
+      let localTime = Date.now() - 2 * 3600 * 1000 + data.timezone * 1000;
+      obj.date = new Date(localTime);
+
+      // if after sunrise and before sunset
+      // it means that its daytime
+      if (Date.now() > data.sys.sunrise * 1000 && Date.now() < data.sys.sunset * 1000){
+        obj.dateIcon = "twemoji:sun";
+      }
+      // else it is night time
+      else{
+        obj.dateIcon = "ic:round-nights-stay";
+      }
+    } catch (error) {
+      alert(error.response.data);
+      return;
+    }
+
+    await commit("updateDates", new Date().getMinutes());
+    await commit("addCity", obj);
+    dispatch("addImage");
   },
 
-  // async delteCity({commit}, data) {
-  //   let names = state.cities.map(city => city.city)
-  // },
+  async deleteCity({ commit }, data) {
+    if (data.length == 0) {
+      commit("emptyCitiesArray");
+      return;
+    }
+
+    let names = state.cities.map(city => city.name);
+    for (let name of names) {
+      if (!data.includes(name)) {
+        commit("deleteCity", name);
+        break;
+      }
+    }
+  },
 
   addImage({ commit }) {
     // if there is no image of city choose random one
@@ -48,6 +96,8 @@ const actions = {
 const getters = {
   getCities: state => state.cities
 };
+
+
 
 export default {
   namespaced: true,
