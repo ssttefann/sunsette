@@ -1,9 +1,9 @@
 <template>
   <header>
-    <v-app-bar app height="210px" class="blue-grey darken-1 pt-5">
+    <v-app-bar app height="120px" class="blue-grey darken-1 pt-5">
       <v-container fluid>
         <v-row class="mt-5 mb-2">
-          <v-col align="center" justify="center">
+          <v-col cols="2">
             <v-btn class="d-flex align-center text-none" text disabled>
               <v-img
                 alt="Logo"
@@ -20,11 +20,9 @@
               </span>
             </v-btn>
           </v-col>
-        </v-row>
 
         <!-- Autocomplete -->
-        <v-row align="center" justify="center">
-          <v-col cols="8" lg="6">
+          <v-col cols="10" lg="10" align="center" justify="center">
             <v-autocomplete
               dark
               v-model="cities"
@@ -50,6 +48,9 @@
         </v-row>
       </v-container>
     </v-app-bar>
+    <v-row>
+      
+    </v-row>
   </header>
 </template>
 
@@ -60,7 +61,6 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
-      // entries: [],
       isLoading: false,
       isUpdating: false,
       model: null,
@@ -78,27 +78,6 @@ export default {
 
       await this.searchEntries(val);
     }
-    // async search(val) {
-    //   if (!val) return;
-
-    //   this.isLoading = true;
-    //   // Lazily load input items
-    //   try {
-    //     let url = `https://api.teleport.org/api/cities/?search=${val}&limit=10`;
-    //     let { data } = await Vue.$axios.get(url);
-    //     let cities = data._embedded["city:search-results"];
-    //     let new_entries = cities.map(city => {
-    //       city = city.matching_full_name.replace(/\([^}]*\)/, "");
-    //       city = city.replace(/,.*,/, ",");
-    //       return city;
-    //     });
-    //     this.entries.push(...new_entries);
-    //   } catch (error) {
-    //     alert(error);
-    //   } finally {
-    //     this.isLoading = false;
-    //   }
-    // }
   },
 
   computed: {

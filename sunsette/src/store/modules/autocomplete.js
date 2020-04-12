@@ -5,8 +5,8 @@ const state = {
 };
 
 const mutations = {
-  addEntry(state, newEntry) {
-    state.entries.push(newEntry);
+  addEntries(state, newEntries) {
+    state.entries.push(...newEntries);
   },
 
   deleteEntry(state, name) {
@@ -17,31 +17,33 @@ const mutations = {
     state.entries = entries;
   },
 
-  emptyEntriesArray(state) {
-    state.entries = [];
+  deleteUnused(state, names) {
+    state.entries = state.entries.filter(entry => names.includes(entry));
   }
 };
 
 const actions = {
-
   async search({ commit }, data) {
     if (!data) return;
 
     let url = `https://api.teleport.org/api/cities/?search=${data}&limit=10`;
-    let { data } = await Vue.$axios.get(url);
-    let cities = data._embedded["city:search-results"];
-    let new_entries = cities.map(city => {
+    let resp = await Vue.$axios.get(url);
+    let cities = resp.data._embedded["city:search-results"];
+    let newEntries = cities.map(city => {
       city = city.matching_full_name.replace(/\([^}]*\)/, "");
       city = city.replace(/,.*,/, ",");
       return city;
     });
-    await commit("")
-    this.entries.push(...new_entries);
+    await commit("addEntries", newEntries);
   },
+
+  async deleteUnused({ commit }, names) {
+    commit("deleteUnused", names);
+  }
 };
 
 const getters = {
-  getCities: state => state.cities
+  getEntries: state => state.entries
 };
 
 export default {

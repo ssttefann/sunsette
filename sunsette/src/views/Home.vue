@@ -1,7 +1,8 @@
 <template>
   <div class="home">
 
-    <CityImages/>
+    <CityImages class="mt-5"/>
+    <WeatherTable/>
 
     <br><br><br><br><br>
     <br><br><br><br><br>
@@ -16,11 +17,13 @@
 <script>
 // @ is an alias to /src
 import CityImages from './../components/CityImages'
+import WeatherTable from './../components/WeatherTable'
 
 export default {
   name: 'Home',
   components: {
-    CityImages
+    CityImages,
+    WeatherTable,
   },
 
   computed : {

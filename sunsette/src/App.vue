@@ -14,18 +14,21 @@
       </v-snackbar>
       <router-view></router-view>
     </v-content>
+    <Footer/>
   </v-app>
 </template>
 
 <script>
-import Toolbar from "@/components/Toolbar.vue";
+import Toolbar from "@/components/Toolbar";
+import Footer from "@/components/Footer.vue";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "App",
 
   components: {
-    Toolbar
+    Toolbar,
+    Footer, 
   },
 
   data: () => ({

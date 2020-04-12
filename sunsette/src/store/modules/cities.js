@@ -61,7 +61,9 @@ const actions = {
         obj.dateIcon = "ic:round-nights-stay";
       }
     } catch (error) {
+      console.log(error);
       alert(error.response.data);
+      await commit("deleteCity", data);
       return;
     }
 
