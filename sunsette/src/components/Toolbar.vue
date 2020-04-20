@@ -26,6 +26,7 @@
         <v-row align="center" justify="center">
           <v-col cols="8" lg="6">
             <v-autocomplete
+              class="overfl"
               dark
               v-model="cities"
               :disabled="isUpdating"
@@ -161,4 +162,6 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+
+</style>

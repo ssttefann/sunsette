@@ -1,36 +1,30 @@
 <template>
-  <v-container class="pt-12 px-12 mine">
-    <v-row align="center" justify="center">
-      <v-col cols="10">
-        <v-data-table
-          :headers="headers"
-          :items="items"
-          hide-default-footer
-          class="elevation-1"
-          :hidden="hide"
-        ></v-data-table>
-      </v-col>
-    </v-row>
-  </v-container>
+  <v-data-table
+    :headers="headers"
+    :items="items"
+    hide-default-footer
+    class="elevation-1"
+    :hidden="hide"
+  ></v-data-table>
 </template>
 
 <script>
 export default {
-  name: "WeatherTable",
+  name: 'WeatherTable',
   components: {},
 
   data() {
     return {
       headers: [
-        { text: "Name", align: "center", value: "name" },
-        { text: "Weather", align: "center", value: "weather" },
-        { text: "Temperature", align: "center", value: "current" },
-        { text: "Min temperature", align: "center", value: "temp_min" },
-        { text: "Max temperature", align: "center", value: "temp_max" },
-        { text: "Air pressure", align: "center", value: "pressure" },
-        { text: "Humidity", align: "center", value: "humidity" },
-        { text: "Timestamp", align: "center", value: "timestamp" }
-      ]
+        { text: 'Name', align: 'center', value: 'name' },
+        { text: 'Weather', align: 'center', value: 'weather' },
+        { text: 'Temperature', align: 'center', value: 'current' },
+        { text: 'Min temperature', align: 'center', value: 'temp_min' },
+        { text: 'Max temperature', align: 'center', value: 'temp_max' },
+        { text: 'Air pressure', align: 'center', value: 'pressure' },
+        { text: 'Humidity', align: 'center', value: 'humidity' },
+        { text: 'Timestamp', align: 'center', value: 'timestamp' },
+      ],
     };
   },
 
@@ -48,22 +42,22 @@ export default {
           humidity: city.currWeatherData.main.humidity,
           timestamp: new Date(
             city.currWeatherData.dt * 1000
-          ).toLocaleDateString("se")
+          ).toLocaleDateString('se'),
         };
       });
     },
     hide() {
       return this.$store.state.cities.cities.length == 0;
-    }
+    },
   },
 
   methods: {
     convert(value) {
       return value;
-    }
+    },
   },
 
-  watch: {}
+  watch: {},
 };
 </script>
 
