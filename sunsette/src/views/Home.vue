@@ -9,11 +9,16 @@
         </v-col>
       </v-row>
 
-      <v-row class="pt-12 px-12 mine" align="center" justify="center">
-        <v-col cols="10" justify="center">
-          <ChartComponent />
-        </v-col>
-      </v-row>
+      <div v-if="visible">
+        <v-row class="pt-12 px-12 mine" align="center" justify="center">
+          <v-col cols="10" justify="center">
+            <div>
+              <h1 class="my-8 pb-5">Weather History Graph</h1>
+            </div>
+            <ChartComponent />
+          </v-col>
+        </v-row>
+      </div>
     </v-container>
   </div>
 </template>
@@ -36,6 +41,9 @@ export default {
     hide() {
       return this.$store.state.cities.length == 0;
     },
+    visible() {
+      return this.$store.state.cities.cities.length > 0;
+    },
   },
 };
 </script>
@@ -44,5 +52,9 @@ export default {
 .mine {
   /* background-color:#a1b9ec !important; */
   max-width: 100%;
+}
+
+.home {
+  background-color: #f8f9fb !important;
 }
 </style>

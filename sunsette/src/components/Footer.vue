@@ -1,5 +1,5 @@
 <template>
-  <v-footer app absolute class="white">
+  <v-footer app absolute class="home">
     <v-row align="center" justify="center">
     <v-col sm="12" lg="12" class="justify-center mx-5">
       <v-divider></v-divider>

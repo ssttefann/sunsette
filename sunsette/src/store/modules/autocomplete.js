@@ -31,10 +31,12 @@ const actions = {
     let cities = resp.data._embedded["city:search-results"];
     let newEntries = cities.map(city => {
       city = city.matching_full_name.replace(/\([^}]*\)/, "");
-      city = city.replace(/,.*,/, ",");
+      city = city.replace(/,.*,/, ",").trim();
+      city = city.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
       return city;
     });
-    await commit("addEntries", newEntries);
+    let unique = [...new Set(newEntries)];
+    await commit("addEntries", unique);
   },
 
   async deleteUnused({ commit }, names) {

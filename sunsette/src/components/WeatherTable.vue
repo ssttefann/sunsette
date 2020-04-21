@@ -3,7 +3,7 @@
     :headers="headers"
     :items="items"
     hide-default-footer
-    class="elevation-1"
+    class="elevation-1 grayish crud-rounded"
     :hidden="hide"
   ></v-data-table>
 </template>
@@ -19,9 +19,9 @@ export default {
         { text: 'Name', align: 'center', value: 'name' },
         { text: 'Weather', align: 'center', value: 'weather' },
         { text: 'Temperature', align: 'center', value: 'current' },
-        { text: 'Min temperature', align: 'center', value: 'temp_min' },
-        { text: 'Max temperature', align: 'center', value: 'temp_max' },
-        { text: 'Air pressure', align: 'center', value: 'pressure' },
+        { text: 'Min Temperature', align: 'center', value: 'temp_min' },
+        { text: 'Max Temperature', align: 'center', value: 'temp_max' },
+        { text: 'Air Pressure', align: 'center', value: 'pressure' },
         { text: 'Humidity', align: 'center', value: 'humidity' },
         { text: 'Timestamp', align: 'center', value: 'timestamp' },
       ],
@@ -69,5 +69,9 @@ export default {
 
 tr {
   /* background-color: #a1b9ec; */
+}
+
+.crud-rounded {
+  border-radius: 10px !important;
 }
 </style>

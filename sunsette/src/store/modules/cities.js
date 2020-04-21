@@ -1,13 +1,13 @@
-import Vue from "vue";
+import Vue from 'vue';
 
 const state = {
   cities: [],
   stockImages: [
-    require("@/assets/images/stock1.jpg"),
-    require("@/assets/images/stock2.jpg"),
-    require("@/assets/images/stock3.jpg"),
-    require("@/assets/images/stock4.jpg")
-  ]
+    require('@/assets/images/stock1.jpg'),
+    require('@/assets/images/stock2.jpg'),
+    require('@/assets/images/stock3.jpg'),
+    require('@/assets/images/stock4.jpg'),
+  ],
 };
 
 const mutations = {
@@ -24,25 +24,24 @@ const mutations = {
   },
 
   updateDates(state, newDate) {
-    for (let city of state.cities){
-      if (city.date.getMinutes() != newDate)
-        city.date.setMinutes(newDate);
+    for (let city of state.cities) {
+      if (city.date.getMinutes() != newDate) city.date.setMinutes(newDate);
     }
   },
 
   setImage(state, newImage) {
     state.cities[state.cities.length - 1].image = newImage;
-  }
+  },
 };
 
 const actions = {
   async addCity({ commit, dispatch }, data) {
     let obj = {
       name: data,
-      image: ""
+      image: '',
     };
 
-    let name = data.split(",")[0];
+    let name = data.split(',')[0];
     let url = `http://api.openweathermap.org/data/2.5/weather?q=${name}&appid=${Vue.$omwKey}`;
 
     try {
@@ -53,58 +52,67 @@ const actions = {
 
       // if after sunrise and before sunset
       // it means that its daytime
-      if (Date.now() > data.sys.sunrise * 1000 && Date.now() < data.sys.sunset * 1000){
-        obj.dateIcon = "twemoji:sun";
+      if (
+        Date.now() > data.sys.sunrise * 1000 &&
+        Date.now() < data.sys.sunset * 1000
+      ) {
+        obj.dateIcon = 'twemoji:sun';
       }
       // else it is night time
-      else{
-        obj.dateIcon = "ic:round-nights-stay";
+      else {
+        obj.dateIcon = 'ic:round-nights-stay';
       }
     } catch (error) {
       console.log(error);
       alert(error.response.data);
-      await commit("deleteCity", data);
+      await commit('deleteCity', data);
       return;
     }
 
-    await commit("updateDates", new Date().getMinutes());
-    await commit("addCity", obj);
-    dispatch("addImage");
+    await commit('updateDates', new Date().getMinutes());
+    await commit('addCity', obj);
+    dispatch('addImage', obj);
   },
 
   async deleteCity({ commit }, data) {
     if (data.length == 0) {
-      commit("emptyCitiesArray");
+      commit('emptyCitiesArray');
       return;
     }
 
     let names = state.cities.map(city => city.name);
     for (let name of names) {
       if (!data.includes(name)) {
-        commit("deleteCity", name);
+        commit('deleteCity', name);
         break;
       }
     }
   },
+  
 
-  addImage({ commit }) {
-    // if there is no image of city choose random one
-    let newImage =
-      state.stockImages[~~(Math.random() * state.stockImages.length)];
-    commit("setImage", newImage);
-  }
+  addImage({ commit }, city) {
+    console.log(city);
+    let image;
+    try {
+      image = require(`@/assets/images/${city.name}.jpg`)
+    } catch {
+      // if there is no image of city choose random one
+      image =
+        state.stockImages[~~(Math.random() * state.stockImages.length)];
+    } finally {
+      commit('setImage', image);
+    }
+  },
 };
 
 const getters = {
-  getCities: state => state.cities
+  getCities: state => state.cities,
 };
-
-
 
 export default {
   namespaced: true,
   state,
   mutations,
   getters,
-  actions
+  actions,
 };

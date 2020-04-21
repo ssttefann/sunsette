@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <Toolbar />
-    <v-content>
+    <v-content class="home">
       <v-snackbar
         v-model="getSnackBar"
         :color="getSnackBarColor"
@@ -51,3 +51,9 @@ export default {
   }
 };
 </script>
+
+<style>
+div .v-slide-group__content v-tabs-bar__content {
+  background-color: #F8F9FB !important;
+}
+</style>

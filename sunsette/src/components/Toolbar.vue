@@ -65,7 +65,8 @@ export default {
       isLoading: false,
       isUpdating: false,
       model: null,
-      search: null
+      search: null,
+      maxLocationsAllowed : 4,
     };
   },
   watch: {
@@ -79,27 +80,6 @@ export default {
 
       await this.searchEntries(val);
     }
-    // async search(val) {
-    //   if (!val) return;
-
-    //   this.isLoading = true;
-    //   // Lazily load input items
-    //   try {
-    //     let url = `https://api.teleport.org/api/cities/?search=${val}&limit=10`;
-    //     let { data } = await Vue.$axios.get(url);
-    //     let cities = data._embedded["city:search-results"];
-    //     let new_entries = cities.map(city => {
-    //       city = city.matching_full_name.replace(/\([^}]*\)/, "");
-    //       city = city.replace(/,.*,/, ",");
-    //       return city;
-    //     });
-    //     this.entries.push(...new_entries);
-    //   } catch (error) {
-    //     alert(error);
-    //   } finally {
-    //     this.isLoading = false;
-    //   }
-    // }
   },
 
   computed: {
@@ -147,7 +127,7 @@ export default {
 
     /* Limits the number of max locations to 4*/
     limiter(val) {
-      if (val.length > 4) {
+      if (val.length > this.maxLocationsAllowed) {
         val.pop();
         this.showSnackbar([
           "You can get weather data for maximum 4 locations at once!",
@@ -156,7 +136,7 @@ export default {
         ]);
       }
 
-      if (val.length == 4) return true;
+      if (val.length == this.maxLocationsAllowed) return true;
     }
   }
 };

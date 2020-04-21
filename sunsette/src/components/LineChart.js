@@ -44,7 +44,7 @@ export default { //We are extending the base chart class as mentioned above
           }]
         },
         legend: {
-          display: true
+          display: true,
         },
         responsive: true,
         maintainAspectRatio: false
