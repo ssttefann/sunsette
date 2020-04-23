@@ -1,14 +1,10 @@
+// :href="`https:/www.google.com/search?q=${city.name}`" // target="_blank"
 <template>
   <v-container>
     <v-row class="mx-12 px-12" align="center" justify="center">
       <template v-for="city in cities">
         <v-col cols="6" lg="3" class="" v-bind:key="city.name">
-          <v-card
-            hover
-            class="rounded-card"
-            :href="`https:/www.google.com/search?q=${city.name}`"
-            target="_blank"
-          >
+          <v-card hover class="rounded-card" @click.stop="openDialog(city)">
             <v-img height="200px" :src="city.image" class="align-end">
               <v-row align="end" justify="end">
                 <v-card primary class="px-6 py-2 rounded-card" hover>
@@ -30,20 +26,27 @@
         </v-col>
       </template>
     </v-row>
+    <!-- <v-btn @click.stop="dialog = true">Dugme</v-btn> -->
+    <v-dialog  v-model="dialog" max-width="430">
+      <Dialog v-bind:city="dialogCity"/>
+    </v-dialog>
   </v-container>
 </template>
 
 <script>
+import Dialog from './Dialog';
 export default {
   name: 'CityImages',
-  components: {},
+  components: { Dialog },
 
   data() {
-    return {};
+    return {
+      dialog: false,
+      selectedCity: null,
+    };
   },
 
   methods: {
-    
     /** Nicely formatting time for given city */
     time(city) {
       let hours = city.date.getHours();
@@ -53,6 +56,11 @@ export default {
       if (minutes < 10) minutes = '0' + minutes;
       return hours + ':' + minutes;
     },
+
+    openDialog(city) {
+      this.selectedCity = city.name;
+      this.dialog = true;
+    },
   },
 
   computed: {
@@ -60,6 +68,13 @@ export default {
       get() {
         return this.$store.state.cities.cities;
       },
+    },
+
+    dialogCity() {
+      let x =  this.$store.state.cities.cities.find(
+        city => city.name == this.selectedCity
+      );
+      return x;
     },
   },
 

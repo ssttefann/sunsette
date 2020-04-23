@@ -89,57 +89,49 @@ const getters = {
   getCities: state => state.cities,
 };
 
-
 /** Adds forecast information for next 48hrs and next 5 days */
 async function addDailyForecastToCity(city) {
   let lat = city.coord.lat;
   let lon = city.coord.lon;
   let url = `http://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${Vue.$omwKey}`;
 
-
   let { data } = await Vue.$axios.get(url);
-
   data.daily.map(weather => {
-    weather.temp = kelvinToCelsius(weather.temp.day);
     weather.temp_min = kelvinToCelsius(weather.temp.min);
     weather.temp_max = kelvinToCelsius(weather.temp.max);
-    weather.localDate = convertToLocalDate(weather.dt, city.timezone)
-  })
+    weather.localDate = convertToLocalDate(weather.dt, city.timezone);
+    weather.temp = kelvinToCelsius(weather.temp.day);
+    weather.icon = getWeatherIcon(weather.weather[0].icon);
+  });
   city.daily = data.daily;
+
 
   //convert hourly forecast to celsius
   data.hourly.map(weather => {
     weather.temp = kelvinToCelsius(weather.temp);
-    weather.localDate = convertToLocalDate(weather.dt, city.timezone)
-  })
-  city.today = data.hourly.slice(1,13);
-
-  //also add curent time
-  let curr = city.current
-  curr.localDate = new Date()
-  // city.today.unshift(city.current);
-
+    weather.localDate = convertToLocalDate(weather.dt, city.timezone);
+    weather.icon = getWeatherIcon(weather.weather[0].icon);
+  });
+  city.today = data.hourly.slice(1, 13);
 
   let firstNextIdx = 0;
   let firstNextDate = data.hourly[0].localDate.getDate();
 
-  for(let i = 1; i < data.hourly.length; i++){
+  for (let i = 1; i < data.hourly.length; i++) {
     // if (data.hourly[i].localDate.getDate() > firstNextDate){
-    if (new Date(data.hourly[i].dt).getDate() > firstNextDate){
+    if (new Date(data.hourly[i].dt).getDate() > firstNextDate) {
       firstNextIdx = i;
       break;
     }
   }
 
-  // start tomorrow data at 06:00 
-  firstNextIdx += 6
+  // start tomorrow data at 06:00
+  firstNextIdx += 6;
 
   //end at 23:00
   if (firstNextIdx + 17 <= data.hourly.length - 1)
-    city.tomorrow = data.hourly.slice(firstNextIdx, firstNextIdx + 18)
-  else
-    city.tomorrow = data.hourly.slice(firstNextIdx, data.hourly.length)
-
+    city.tomorrow = data.hourly.slice(firstNextIdx, firstNextIdx + 18);
+  else city.tomorrow = data.hourly.slice(firstNextIdx, data.hourly.length);
 }
 
 /** Adds curernt weather information for the city */
@@ -148,6 +140,7 @@ async function addCurrentWeatherToCity(city) {
   let url = `http://api.openweathermap.org/data/2.5/weather?q=${name}&appid=${Vue.$omwKey}`;
 
   let { data } = await Vue.$axios.get(url);
+  city.cityName = name;
   city.coord = data.coord;
   city.current = data.main;
   city.current.wind = data.wind;
@@ -185,17 +178,47 @@ async function addCurrentWeatherToCity(city) {
 //   console.log(data);
 // }
 
-
 /** Converts temperature to celsius */
 function kelvinToCelsius(degree) {
   return Math.round(degree - 273.15);
 }
 
-
 /* Converts iso time to local date*/
 function convertToLocalDate(dt, timezone) {
   let offset = 3600;
   return new Date(dt * 1000 - 2 * offset * 1000 + timezone * 1000);
+}
+
+/** Get Iconify icon for given open weather icon */
+function getWeatherIcon(iconId) {
+  switch (iconId) {
+    case '01d':
+      return 'twemoji:sun';
+    case '01n':
+      return 'ic:round-nights-stay';
+    case '02d':
+      return 'twemoji-sun-behind-large-cloud';
+    case '03d':
+    case '04d':
+      return 'twemoji-sun-behind-cloud';    
+    case '03n':
+    case '04n':
+      return 'twemoji-cloud';
+    case '09d':
+    case '10d':
+      return 'twemoji-sun-behind-rain-cloud';
+    case '09n':
+    case '10n':
+      return 'twemoji-cloud-with-rain';
+    case '11d':
+    case '11n':
+      return 'twemoji-cloud-with-lightning-and-rain';
+    case '13d':
+    case '13n':
+      return 'twemoji-cloud-with-snow';
+    default:
+      return 'twemoji:sun';
+  }
 }
 
 // function convertToCEST(dt){

@@ -1,10 +1,10 @@
 <template>
-  <div class="home">
+  <div class="home macfont">
     <v-container>
 
       <!-- City Images -->
       <!-- <CityImages class="mt-5" /> -->
-      <v-row class="pt-12 px-12 mine" align="center" justify="center">
+      <v-row class="pt-8 px-12 mine" align="center" justify="center">
         <v-col cols="10" sm="12" lg="12">
           <CityImages class="mt-5" />
         </v-col>
@@ -22,7 +22,7 @@
         <v-row class="pt-12 px-12 mine" align="center" justify="center">
           <v-col cols="10" sm="12" lg="10" justify="center">
             <div>
-              <h1 class="my-8 pb-5">Weather History Graph</h1>
+              <h1 class="my-8 pb-5">Weather Forecast</h1>
             </div>
             <ChartComponent />
           </v-col>

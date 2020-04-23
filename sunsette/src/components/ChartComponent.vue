@@ -51,8 +51,8 @@
         </div>
       </v-tab-item>
     </v-tabs-items>
-    
   </v-card>
+
 </template>
 
 <script>
@@ -68,7 +68,7 @@ export default {
   data() {
     return {
       datacollection: null,
-      tabNames: ['Past Week', 'Today', 'Tomorrow', 'Next Week'],
+      tabNames: ['Today', 'Tomorrow', 'Next Week'],
       tab: 1,
       tabContent: ['One', 'Two', 'Three', 'Four'],
       measurementOptions: [
@@ -98,14 +98,14 @@ export default {
       let labels = [];
 
       //today
-      if (this.tab == 1) {
+      if (this.tab == 0) {
         let now = new Date().getHours();
         for (let i = now; i < now + 12; i++) {
           labels.push(this.formatHours(i));
         }
       }
       //tomorrow
-      else if (this.tab == 2) {
+      else if (this.tab == 1) {
         let day = new Date().getDay();
         for (let i = 6; i < 24; i++) {
           labels.push(this.days[day] + ' ' + this.formatHours(i));
@@ -155,9 +155,9 @@ export default {
     items() {
       // see which tab is active
       let property = 'today';
-      if (this.tab == 2) {
+      if (this.tab == 1) {
         property = 'tomorrow';
-      } else if (this.tab == 3) {
+      } else if (this.tab == 2) {
         property = 'daily';
       }
 

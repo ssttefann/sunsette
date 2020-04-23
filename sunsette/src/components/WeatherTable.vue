@@ -1,17 +1,24 @@
 <template>
+<div>
   <v-data-table
     :headers="headers"
     :items="items"
     hide-default-footer
     class="elevation-1 grayish crud-rounded"
     :hidden="hide"
+    @click:row="openDialog"
   ></v-data-table>
+      <v-dialog  v-model="dialog" max-width="430">
+      <Dialog v-bind:city="dialogCity"/>
+    </v-dialog>
+</div>
 </template>
 
 <script>
+import Dialog from './Dialog';
 export default {
   name: 'WeatherTable',
-  components: {},
+  components: {Dialog},
 
   data() {
     return {
@@ -25,6 +32,9 @@ export default {
         { text: 'Humidity', align: 'center', value: 'humidity' },
         { text: 'Timestamp', align: 'center', value: 'timestamp' },
       ],
+      dialog: false,
+      selectedCity: null,
+
     };
   },
 
@@ -46,7 +56,14 @@ export default {
         };
       });
     },
-    
+
+    dialogCity() {
+      let x =  this.$store.state.cities.cities.find(
+        city => city.name == this.selectedCity
+      );
+      return x;
+    },
+
     /** Hide table if there are no cities selected */
     hide() {
       return this.$store.state.cities.cities.length == 0;
@@ -54,6 +71,10 @@ export default {
   },
 
   methods: {
+    openDialog(city) {
+      this.selectedCity = city.name;
+      this.dialog = true;
+    }
   },
 
   watch: {},
@@ -68,6 +89,10 @@ export default {
 
 tr {
   /* background-color: #a1b9ec; */
+}
+
+tr {
+    cursor: pointer;
 }
 
 .crud-rounded {

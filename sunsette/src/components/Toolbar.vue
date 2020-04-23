@@ -1,6 +1,6 @@
 <template>
   <header>
-    <v-app-bar app height="210px" class="blue-grey darken-1 pt-5">
+    <v-app-bar app height="200px" class="blue-grey darken-1 pt-5">
       <v-container fluid>
         <v-row class="mt-5 mb-2">
           <v-col align="center" justify="center">
@@ -97,6 +97,9 @@ export default {
           return;
         }
 
+        // reset the input value
+        this.search = '';
+
         //addition
 
         // if already full
@@ -104,9 +107,6 @@ export default {
 
         // last item is the newly added city
         await this.addCity(value[value.length - 1]);
-
-        // reset the input value
-        this.search = '';
 
         // delete unused ac options
         let names = this.cities.map(city => city.name);
