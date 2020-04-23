@@ -23,6 +23,8 @@ const mutations = {
 };
 
 const actions = {
+
+  /** Uses teleport API to query cities based on partial user input */
   async search({ commit }, data) {
     if (!data) return;
 

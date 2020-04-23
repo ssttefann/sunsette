@@ -1,17 +1,26 @@
 <template>
   <div class="home">
     <v-container>
-      <CityImages class="mt-5" />
-      <!-- <v-container class="pt-12 px-12 mine"> -->
+
+      <!-- City Images -->
+      <!-- <CityImages class="mt-5" /> -->
       <v-row class="pt-12 px-12 mine" align="center" justify="center">
-        <v-col cols="10">
+        <v-col cols="10" sm="12" lg="12">
+          <CityImages class="mt-5" />
+        </v-col>
+      </v-row>
+
+      <!-- Weather Table -->
+      <v-row class="pt-12 px-12 mine" align="center" justify="center">
+        <v-col cols="10" sm="12" lg="10">
           <WeatherTable />
         </v-col>
       </v-row>
 
+      <!-- Weather Graph -->
       <div v-if="visible">
         <v-row class="pt-12 px-12 mine" align="center" justify="center">
-          <v-col cols="10" justify="center">
+          <v-col cols="10" sm="12" lg="10" justify="center">
             <div>
               <h1 class="my-8 pb-5">Weather History Graph</h1>
             </div>

@@ -16,7 +16,7 @@ export default {
   data() {
     return {
       headers: [
-        { text: 'Name', align: 'center', value: 'name' },
+        { text: 'City', align: 'center', value: 'name' },
         { text: 'Weather', align: 'center', value: 'weather' },
         { text: 'Temperature', align: 'center', value: 'current' },
         { text: 'Min Temperature', align: 'center', value: 'temp_min' },
@@ -34,27 +34,26 @@ export default {
         return {
           name: city.name,
           date: city.date,
-          weather: city.currWeatherData.weather[0].main,
-          current: city.currWeatherData.main.temp,
-          temp_min: city.currWeatherData.main.temp_min,
-          temp_max: city.currWeatherData.main.temp_max,
-          pressure: city.currWeatherData.main.pressure,
-          humidity: city.currWeatherData.main.humidity,
+          weather: city.current.weather[0].main,
+          current: city.current.temp,
+          temp_min: city.current.temp_min,
+          temp_max: city.current.temp_max,
+          pressure: city.current.pressure,
+          humidity: city.current.humidity,
           timestamp: new Date(
-            city.currWeatherData.dt * 1000
+            city.current.dt * 1000
           ).toLocaleDateString('se'),
         };
       });
     },
+    
+    /** Hide table if there are no cities selected */
     hide() {
       return this.$store.state.cities.cities.length == 0;
     },
   },
 
   methods: {
-    convert(value) {
-      return value;
-    },
   },
 
   watch: {},

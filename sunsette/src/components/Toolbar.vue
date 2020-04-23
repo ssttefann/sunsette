@@ -56,7 +56,7 @@
 
 <script>
 // import Vue from "vue";
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   data() {
@@ -66,7 +66,7 @@ export default {
       isUpdating: false,
       model: null,
       search: null,
-      maxLocationsAllowed : 4,
+      maxLocationsAllowed: 4,
     };
   },
   watch: {
@@ -77,14 +77,13 @@ export default {
     },
     async search(val) {
       if (!val) return;
-
       await this.searchEntries(val);
-    }
+    },
   },
 
   computed: {
     ...mapGetters({
-      getEntries : "autocomplete/getEntries"
+      getEntries: 'autocomplete/getEntries',
     }),
 
     cities: {
@@ -107,41 +106,39 @@ export default {
         await this.addCity(value[value.length - 1]);
 
         // reset the input value
-        this.search = "";
+        this.search = '';
 
         // delete unused ac options
         let names = this.cities.map(city => city.name);
         this.deleteUnused(names);
-      }
-    }
+      },
+    },
   },
 
   methods: {
     ...mapActions({
-      addCity: "cities/addCity",
-      deleteCity: "cities/deleteCity",
-      showSnackbar: "snackbar/showSnackbar",
-      searchEntries: "autocomplete/search",
-      deleteUnused : "autocomplete/deleteUnused"
+      addCity: 'cities/addCity',
+      deleteCity: 'cities/deleteCity',
+      showSnackbar: 'snackbar/showSnackbar',
+      searchEntries: 'autocomplete/search',
+      deleteUnused: 'autocomplete/deleteUnused',
     }),
 
-    /* Limits the number of max locations to 4*/
+    /* Limits the number of max input locations*/
     limiter(val) {
       if (val.length > this.maxLocationsAllowed) {
         val.pop();
         this.showSnackbar([
-          "You can get weather data for maximum 4 locations at once!",
-          "error",
-          "bottom"
+          'You can get weather data for maximum 4 locations at once!',
+          'error',
+          'bottom',
         ]);
       }
 
       if (val.length == this.maxLocationsAllowed) return true;
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style>
-
-</style>
+<style></style>

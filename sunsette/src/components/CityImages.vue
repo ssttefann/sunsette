@@ -43,6 +43,8 @@ export default {
   },
 
   methods: {
+    
+    /** Nicely formatting time for given city */
     time(city) {
       let hours = city.date.getHours();
       let minutes = city.date.getMinutes();
