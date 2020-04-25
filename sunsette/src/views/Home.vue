@@ -1,28 +1,28 @@
 <template>
-  <div class="home macfont">
-    <v-container>
+  <div class="home macfont ma-0 pa-0 mine bback">
+    <v-container class="ma-0 pa-0">
 
       <!-- City Images -->
       <!-- <CityImages class="mt-5" /> -->
-      <v-row class="pt-8 px-12 mine" align="center" justify="center">
+      <v-row class="pt-2 px-12 mine mx-5" align="center" justify="center">
         <v-col cols="10" sm="12" lg="12">
           <CityImages class="mt-5" />
         </v-col>
       </v-row>
 
       <!-- Weather Table -->
-      <v-row class="pt-12 px-12 mine" align="center" justify="center">
+      <v-row class="pt-12 px-12 mine mx-5" align="center" justify="center">
         <v-col cols="10" sm="12" lg="10">
           <WeatherTable />
         </v-col>
       </v-row>
 
       <!-- Weather Graph -->
-      <div v-if="visible">
-        <v-row class="pt-12 px-12 mine" align="center" justify="center">
+      <div v-if="visible" class="pb-5">
+        <v-row class="pt-12 px-12 mine mx-5" align="center" justify="center">
           <v-col cols="10" sm="12" lg="10" justify="center">
             <div>
-              <h1 class="my-8 pb-5">Weather Forecast</h1>
+              <h1 class="my-8 pb-5 white--text">Weather Graph</h1>
             </div>
             <ChartComponent />
           </v-col>
@@ -61,6 +61,15 @@ export default {
 .mine {
   /* background-color:#a1b9ec !important; */
   max-width: 100%;
+}
+
+.bback {
+  /* background-image: url('https://files.123freevectors.com/wp-content/original/130977-blue-and-white-polygon-pattern-background-vector-art.jpg')!important; */
+  /* background-image: url('https://images.pexels.com/photos/167699/pexels-photo-167699.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'); */
+  /* background-image: url('../assets/images/bback.jpeg'); */
+  /* background-image: url('https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'); */
+  background-image: url('https://images.pexels.com/photos/2539460/pexels-photo-2539460.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');
+  height: 100%;
 }
 
 .home {

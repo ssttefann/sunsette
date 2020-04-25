@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <Toolbar />
+    <Toolbar/>
     <v-content class="home">
       <v-snackbar
         v-model="getSnackBar"
@@ -14,13 +14,13 @@
       </v-snackbar>
       <router-view></router-view>
     </v-content>
-    <Footer/>
+    <!-- <Footer/> -->
   </v-app>
 </template>
 
 <script>
 import Toolbar from "@/components/Toolbar";
-import Footer from "@/components/Footer.vue";
+// import Footer from "@/components/Footer.vue";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
@@ -28,7 +28,7 @@ export default {
 
   components: {
     Toolbar,
-    Footer, 
+    // Footer, 
   },
 
   data: () => ({
@@ -56,4 +56,14 @@ export default {
 div .v-slide-group__content v-tabs-bar__content {
   background-color: #F8F9FB !important;
 }
+
+.cent {
+  text-align: center !important;
+}
+
+.macfont {
+  /* font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto; */
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
 </style>

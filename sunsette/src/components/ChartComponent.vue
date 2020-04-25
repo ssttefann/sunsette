@@ -1,5 +1,5 @@
 <template>
-  <v-card class="px-5 py-6 grayish graph-card">
+  <v-card class="px-3 py-3 mb-5 grayish graph-card">
     <v-row align="center" justify="end" class="ml-5">
       <v-col lg="6" sm="6" class="grayish" align="begin" justify="begin">
         <!-- Tabs for charts -->
@@ -19,7 +19,9 @@
           :items="measurementOptions"
           hide-details
           single-line
-          class="unitSelection"
+          solo
+          dense
+          class="unitSelection mt-5"
         >
         </v-select>
       </v-col>
@@ -41,8 +43,8 @@
 
     <!-- Tab items -->
     <v-tabs-items v-model="tab">
-      <v-tab-item v-for="item in tabNames" :key="item" class="grayish">
-        <div class="ma-7 mb-0 pa-7 pb-0">
+      <v-tab-item v-for="item in tabNames" :key="item" class="">
+        <div class="ma-7 mb-0 pa-7 pb-3">
           <line-chart
             class="chart"
             :chart-data="items"
@@ -52,7 +54,6 @@
       </v-tab-item>
     </v-tabs-items>
   </v-card>
-
 </template>
 
 <script>
@@ -73,19 +74,19 @@ export default {
       tabContent: ['One', 'Two', 'Three', 'Four'],
       measurementOptions: [
         { text: 'Temperature (℃)' },
-        { text: 'Air Pressure (mbar)' },
+        { text: 'Air Pressure (hPa)' },
         { text: 'Humidity (%)' },
       ],
       selectedMeasurement: 'Temperature (℃)',
       colors: ['blue', 'red', 'green', 'black'],
       days: [
+        'Sunday',
         'Monday',
         'Tuesday',
         'Wednesday',
         'Thursday',
         'Friday',
         'Saturday',
-        'Sunday',
       ],
     };
   },
@@ -106,7 +107,7 @@ export default {
       }
       //tomorrow
       else if (this.tab == 1) {
-        let day = new Date().getDay();
+        let day = (new Date().getDay() + 1) % 7;
         for (let i = 6; i < 24; i++) {
           labels.push(this.days[day] + ' ' + this.formatHours(i));
         }
@@ -125,6 +126,7 @@ export default {
 
     /** Nicely formatting hours for display */
     formatHours(hour) {
+      hour = hour % 24;
       let formatted = hour + ':00';
       return hour < 10 ? '0' + formatted : formatted;
     },
@@ -202,8 +204,14 @@ export default {
 }
 
 .unitSelection {
-  max-width: 170px;
+  max-width: 190px;
 }
+
+th {
+  background-color: rgb(230, 233, 240);
+  /* background-color:rgba(133, 190, 216, 0.397); */
+}
+
 
 .grayish {
   background-color: #ffffff !important;

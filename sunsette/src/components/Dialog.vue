@@ -3,9 +3,6 @@
     <v-card-text class="pt-5 pb-1 cent white--text headline">
       {{ city.cityName }}
     </v-card-text>
-    <v-card-text class="cent white--text caption">
-      {{ city.current.weather[0].main }}
-    </v-card-text>
 
     <div class="white--text cent display-3">
       {{ city.current.temp + ' °' }}
@@ -83,13 +80,13 @@ export default {
   data() {
     return {
       days: [
+        'Sunday',
         'Monday',
         'Tuesday',
         'Wednesday',
         'Thursday',
         'Friday',
         'Saturday',
-        'Sunday',
       ],
     };
   },
@@ -97,11 +94,16 @@ export default {
 
   computed: {
     hoursItems() {
-      return this.city.today.slice(1, 7);
+      console.log(this.city);
+      return this.city.today.slice(0, 6);
     },
 
     daysItems() {
-      return this.city.daily.slice(1, 7);
+      let now = this.city.date.getDay();
+      let firstEntry = this.city.daily[0].localDate.getDay();
+
+      if (now == firstEntry) return this.city.daily.slice(1, 7);
+      else return this.city.daily.slice(0, 6);
     },
 
     todayMinTemp() {
@@ -112,13 +114,6 @@ export default {
 </script>
 
 <style>
-.cent {
-  text-align: center !important;
-}
-
-.macfont {
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-}
 
 .mintemp{
   color: #9E9E9E ;

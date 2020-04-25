@@ -112,7 +112,7 @@ async function addDailyForecastToCity(city) {
     weather.localDate = convertToLocalDate(weather.dt, city.timezone);
     weather.icon = getWeatherIcon(weather.weather[0].icon);
   });
-  city.today = data.hourly.slice(1, 13);
+  city.today = data.hourly.slice(0, 12);
 
   let firstNextIdx = 0;
   let firstNextDate = data.hourly[0].localDate.getDate();
@@ -140,12 +140,14 @@ async function addCurrentWeatherToCity(city) {
   let url = `http://api.openweathermap.org/data/2.5/weather?q=${name}&appid=${Vue.$omwKey}`;
 
   let { data } = await Vue.$axios.get(url);
+  console.log(data.visibility);
   city.cityName = name;
   city.coord = data.coord;
   city.current = data.main;
   city.current.wind = data.wind;
   city.current.dt = data.dt;
   city.timezone = data.timezone;
+  city.current.visibility = data.visibility;
   city.current.weather = data.weather;
   city.current.temp = kelvinToCelsius(data.main.temp);
   city.current.temp_min = kelvinToCelsius(data.main.temp_min);

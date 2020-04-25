@@ -20,15 +20,15 @@
               </v-row>
             </v-img>
           </v-card>
-          <div class="text-center mt-4">
+          <div class="text-center mt-4 white--text">
             {{ city.name }}
           </div>
         </v-col>
       </template>
     </v-row>
     <!-- <v-btn @click.stop="dialog = true">Dugme</v-btn> -->
-    <v-dialog  v-model="dialog" max-width="430">
-      <Dialog v-bind:city="dialogCity"/>
+    <v-dialog v-model="dialog" max-width="430">
+      <Dialog v-bind:city="dialogCity" />
     </v-dialog>
   </v-container>
 </template>
@@ -71,10 +71,10 @@ export default {
     },
 
     dialogCity() {
-      let x =  this.$store.state.cities.cities.find(
+      let x = this.$store.state.cities.cities.find(
         city => city.name == this.selectedCity
       );
-      return x;
+      return x ? x : "";
     },
   },
 

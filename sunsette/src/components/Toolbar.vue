@@ -1,6 +1,6 @@
 <template>
   <header>
-    <v-app-bar app height="200px" class="blue-grey darken-1 pt-5">
+    <v-app-bar app height="180px" class="blue-grey darken-1 pt-2">
       <v-container fluid>
         <v-row class="mt-5 mb-2">
           <v-col align="center" justify="center">
