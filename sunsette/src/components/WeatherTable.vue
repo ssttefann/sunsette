@@ -75,12 +75,14 @@ export default {
         return {
           name: city.name,
           date: city.date,
-          current: city[property][0].temp,
-          temp_min: Math.min(...city[property].map(weather => weather.temp)),
-          temp_max: Math.max(...city[property].map(weather => weather.temp)),
-          pressure: city[property][0].pressure,
-          humidity: city[property][0].humidity,
-          visibility: city.current.visibility,
+          current: city[property][0].temp + '℃',
+          temp_min:
+            Math.min(...city[property].map(weather => weather.temp)) + '℃',
+          temp_max:
+            Math.max(...city[property].map(weather => weather.temp)) + '℃',
+          pressure: city[property][0].pressure + ' hPa',
+          humidity: city[property][0].humidity + '%',
+          visibility: city.current.visibility + ' km',
           timestamp: this.getLocalTimestamp(city.current.dt, city.timezone),
         };
       });
@@ -102,7 +104,8 @@ export default {
     getHeaders() {
       if (this.selectedOption != 'Today')
         return this.headers.filter(
-          header => !['Timestamp', 'Temperature', 'Visibility'].includes(header.text)
+          header =>
+            !['Timestamp', 'Temperature', 'Visibility'].includes(header.text)
         );
 
       return this.headers;
@@ -118,7 +121,15 @@ export default {
     getLocalTimestamp(dt, timezone) {
       let offset = 3600;
       let date = new Date(dt * 1000 - 2 * offset * 1000 + timezone * 1000);
-      return date.getDate() + "." + (date.getMonth() + 1)  + " " + date.getHours() + ":" + date.getMinutes();
+      return (
+        date.getDate() +
+        '.' +
+        (date.getMonth() + 1) +
+        ' ' +
+        date.getHours() +
+        ':' +
+        date.getMinutes()
+      );
     },
   },
 
@@ -128,12 +139,7 @@ export default {
 
 <style>
 .mine {
-  /* background-color:#a1b9ec !important; */
   max-width: 100%;
-}
-
-tr {
-  /* background-color: #a1b9ec; */
 }
 
 tr {

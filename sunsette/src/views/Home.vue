@@ -1,9 +1,7 @@
 <template>
   <div class="home macfont ma-0 pa-0 mine bback">
-    <v-container class="ma-0 pa-0">
-
+    <v-container class="ma-0 pa-0 mine">
       <!-- City Images -->
-      <!-- <CityImages class="mt-5" /> -->
       <v-row class="pt-2 px-12 mine mx-5" align="center" justify="center">
         <v-col cols="10" sm="12" lg="12">
           <CityImages class="mt-5" />
@@ -59,15 +57,10 @@ export default {
 
 <style>
 .mine {
-  /* background-color:#a1b9ec !important; */
-  max-width: 100%;
+  width: 100%;
 }
 
 .bback {
-  /* background-image: url('https://files.123freevectors.com/wp-content/original/130977-blue-and-white-polygon-pattern-background-vector-art.jpg')!important; */
-  /* background-image: url('https://images.pexels.com/photos/167699/pexels-photo-167699.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'); */
-  /* background-image: url('../assets/images/bback.jpeg'); */
-  /* background-image: url('https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'); */
   background-image: url('https://images.pexels.com/photos/2539460/pexels-photo-2539460.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');
   height: 100%;
 }

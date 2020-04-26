@@ -74,7 +74,7 @@ export default {
       let x = this.$store.state.cities.cities.find(
         city => city.name == this.selectedCity
       );
-      return x ? x : "";
+      return x ? x : '';
     },
   },
 

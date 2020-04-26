@@ -22,6 +22,7 @@
           solo
           dense
           class="unitSelection mt-5"
+          v-on:change="selectChanged"
         >
         </v-select>
       </v-col>
@@ -48,6 +49,7 @@
           <line-chart
             class="chart"
             :chart-data="items"
+            :options="getOptions"
             :styles="myStyles"
           ></line-chart>
         </div>
@@ -88,6 +90,50 @@ export default {
         'Friday',
         'Saturday',
       ],
+      myStyles: {
+        height: '350px',
+        position: 'relative',
+      },
+
+      options: {
+        scales: {
+          yAxes: [
+            {
+              scaleLabel: {
+                display: false,
+                labelString: 'Temperature',
+              },
+              ticks: {
+                beginAtZero: false,
+                callback: function(value) {
+                  if (value > 500) return value + ' hPa';
+                  if (value > 40) return value + ' %';
+                  return value + '℃';
+                },
+              },
+              gridLines: {
+                display: true,
+              },
+            },
+          ],
+          xAxes: [
+            {
+              scaleLabel: {
+                display: false,
+                labelString: 'Time',
+              },
+              gridLines: {
+                display: false,
+              },
+            },
+          ],
+        },
+        legend: {
+          display: true,
+        },
+        responsive: true,
+        maintainAspectRatio: false,
+      },
     };
   },
 
@@ -139,6 +185,10 @@ export default {
       link.href = canvas.toDataURL('image/png', 1.0);
       link.click();
     },
+
+    selectChanged(val) {
+      this.options.scales.yAxes[0].scaleLabel.labelString = val;
+    },
   },
 
   computed: {
@@ -146,13 +196,6 @@ export default {
       getSnackBar: 'snackbar/getSnackBar',
       getCities: 'cities/getCities',
     }),
-
-    myStyles() {
-      return {
-        height: `350px`,
-        position: 'relative',
-      };
-    },
 
     items() {
       // see which tab is active
@@ -165,10 +208,11 @@ export default {
 
       // see which measurement is active
       let measurement = 'temp';
-      if (this.selectedMeasurement.includes('Humidity'))
+      if (this.selectedMeasurement.includes('Humidity')) {
         measurement = 'humidity';
-      else if (this.selectedMeasurement.includes('Pressure'))
+      } else if (this.selectedMeasurement.includes('Pressure')) {
         measurement = 'pressure';
+      }
 
       //get labels for chart's x-axis
       let labels = this.getLabels();
@@ -191,15 +235,16 @@ export default {
 
       return { labels, datasets };
     },
+
+    getOptions() {
+      return this.options;
+    },
   },
 };
 </script>
 
 <style>
 .chart {
-  /* max-width: 600px;
-  margin: 150px auto; */
-  /* max-width: 1500px; */
   width: 100%;
 }
 
@@ -209,9 +254,7 @@ export default {
 
 th {
   background-color: rgb(230, 233, 240);
-  /* background-color:rgba(133, 190, 216, 0.397); */
 }
-
 
 .grayish {
   background-color: #ffffff !important;

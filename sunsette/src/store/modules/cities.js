@@ -147,7 +147,7 @@ async function addCurrentWeatherToCity(city) {
   city.current.wind = data.wind;
   city.current.dt = data.dt;
   city.timezone = data.timezone;
-  city.current.visibility = data.visibility;
+  city.current.visibility = data.visibility / 1000;
   city.current.weather = data.weather;
   city.current.temp = kelvinToCelsius(data.main.temp);
   city.current.temp_min = kelvinToCelsius(data.main.temp_min);
@@ -167,18 +167,6 @@ async function addCurrentWeatherToCity(city) {
     city.dateIcon = 'ic:round-nights-stay';
   }
 }
-
-// async function addHistoricWeatherToCity(city) {
-//   let lat = city.info.coord.lat;
-//   let lon = city.info.coord.lon;
-//   let fivedays = Date.now() + 1 * 3600 * 1000;
-//   console.log(fivedays)
-//   console.log(new Date(fivedays))
-//   let url = `http://api.openweathermap.org/data/2.5/onecall/timemachine?lat=${lat}&lon=${lon}&dt=${fivedays}&appid=${Vue.$omwKey}`
-
-//   let { data } = await Vue.$axios.get(url);
-//   console.log(data);
-// }
 
 /** Converts temperature to celsius */
 function kelvinToCelsius(degree) {
