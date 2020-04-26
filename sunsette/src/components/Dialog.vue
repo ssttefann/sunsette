@@ -4,18 +4,23 @@
       {{ city.cityName }}
     </v-card-text>
 
-    <div class="white--text cent display-3">
+    <div v-if="city != ''" class="white--text cent display-3">
       {{ city.current.temp + ' °' }}
     </div>
 
     <v-container id="dialogCard">
       <v-row class="px-3">
         <v-col>
-          <!-- {{ days[new Date().getDay()] }} -->
           Today
         </v-col>
         <v-spacer></v-spacer>
-        <v-col cols="2" align="end" justify="end" class="ml-4 cent">
+        <v-col
+          v-if="city != ''"
+          cols="2"
+          align="end"
+          justify="end"
+          class="ml-4 cent"
+        >
           {{ city.current.temp_max + '°' }}
         </v-col>
         <v-col cols="2" justify="end" align="end" class="mintemp cent">
@@ -32,7 +37,7 @@
       </v-row>
 
       <v-row class="px-2">
-        <v-col v-for="item in hoursItems" :key="item.dt" align="center">
+        <v-col v-for="item in hoursItems" :key="item.id" align="center">
           <span
             class="iconify"
             :data-icon="item.icon"
@@ -66,7 +71,7 @@
         </v-col>
 
         <v-col class="mintemp cent">
-          {{ item.temp_min + '°'}}
+          {{ item.temp_min + '°' }}
         </v-col>
       </v-row>
     </v-container>
@@ -94,11 +99,12 @@ export default {
 
   computed: {
     hoursItems() {
-      console.log(this.city);
+      if (this.city == '') return [];
       return this.city.today.slice(0, 6);
     },
 
     daysItems() {
+      if (this.city == '') return [];
       let now = this.city.date.getDay();
       let firstEntry = this.city.daily[0].localDate.getDay();
 
@@ -107,16 +113,17 @@ export default {
     },
 
     todayMinTemp() {
-      return Math.min(...this.city.today.map(weather => weather.temp)) + ' °'
-    }
+      if (this.city.today)
+        return Math.min(...this.city.today.map(weather => weather.temp)) + ' °';
+      return 0;
+    },
   },
 };
 </script>
 
 <style>
-
-.mintemp{
-  color: #9E9E9E ;
+.mintemp {
+  color: #9e9e9e;
 }
 
 #dialogCard .iconify {

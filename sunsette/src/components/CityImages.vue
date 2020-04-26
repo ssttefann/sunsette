@@ -26,7 +26,7 @@
         </v-col>
       </template>
     </v-row>
-    <!-- <v-btn @click.stop="dialog = true">Dugme</v-btn> -->
+    
     <v-dialog v-model="dialog" max-width="430">
       <Dialog v-bind:city="dialogCity" />
     </v-dialog>

@@ -18,12 +18,10 @@ npm install
 
   
 
-After that run the command to start the application:
+After that you can start the application:
 
 ```
-
 npm run serve
-
 ```
 
   

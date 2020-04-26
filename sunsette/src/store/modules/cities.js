@@ -111,14 +111,14 @@ async function addDailyForecastToCity(city) {
     weather.temp = kelvinToCelsius(weather.temp);
     weather.localDate = convertToLocalDate(weather.dt, city.timezone);
     weather.icon = getWeatherIcon(weather.weather[0].icon);
+    weather.id = lat + " " + lon + weather.localDate.getHours();
   });
-  city.today = data.hourly.slice(0, 12);
+  city.today = data.hourly.slice(0,12);
 
   let firstNextIdx = 0;
   let firstNextDate = data.hourly[0].localDate.getDate();
 
   for (let i = 1; i < data.hourly.length; i++) {
-    // if (data.hourly[i].localDate.getDate() > firstNextDate){
     if (new Date(data.hourly[i].dt).getDate() > firstNextDate) {
       firstNextIdx = i;
       break;
@@ -140,7 +140,6 @@ async function addCurrentWeatherToCity(city) {
   let url = `http://api.openweathermap.org/data/2.5/weather?q=${name}&appid=${Vue.$omwKey}`;
 
   let { data } = await Vue.$axios.get(url);
-  console.log(data.visibility);
   city.cityName = name;
   city.coord = data.coord;
   city.current = data.main;
@@ -188,6 +187,8 @@ function getWeatherIcon(iconId) {
       return 'ic:round-nights-stay';
     case '02d':
       return 'twemoji-sun-behind-large-cloud';
+    case '02n':
+      return 'ion:cloudy-night';
     case '03d':
     case '04d':
       return 'twemoji-sun-behind-cloud';    
